@@ -1,0 +1,165 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Coaching",
+        "description": "Coaching System Application API details"
+    },
+    "host": "dev-coaching-api.tdcx.com",
+    "basePath": "/api",
+    "tags": [
+        {
+            "name": "Authentication",
+            "description": "API for authenticating users in the system"
+        },
+        {
+            "name": "FAQ",
+            "description": "API for fetching FAQ informations"
+        }
+    ],
+    "schemes": [
+        "https"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "securityDefinitions": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    },
+    "paths": {
+        "/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "description": "Validate user in the system",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "description": "User credentials",
+                        "schema": {
+                            "required": [
+                                "username",
+                                "password"
+                            ],
+                            "properties": {
+                                "username": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User details based on credentials",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "u_fullname": {
+                                    "type": "string"
+                                },
+                                "u_email": {
+                                    "type": "string"
+                                },
+                                "u_levelid": {
+                                    "type": "string"
+                                },
+                                "token": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/getFAQInfo": {
+            "get": {
+                "tags": [
+                    "FAQ"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Retrieve FAQ information",
+                "parameters": [
+                    {
+                        "name": "level_id",
+                        "in": "query",
+                        "description": "Level Id of the logged in user",
+                        "schema": {
+                            "required": [
+                                "level_id"
+                            ],
+                            "properties": {
+                                "level_id": {
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "FAQ based on level_id",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "question": {
+                                        "type": "string"
+                                    },
+                                    "answer": {
+                                        "type": "string"
+                                    },
+                                    "faq_category_id": {
+                                        "type": "integer"
+                                    },
+                                    "level_id": {
+                                        "type": "integer"
+                                    },
+                                    "category_name": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Value of 'key name' can not be null."
+                    },
+                    "500": {
+                        "description": "Internal server error."
+                    }
+                }
+            }
+        }
+    }
+}
